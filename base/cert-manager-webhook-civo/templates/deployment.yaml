@@ -1,0 +1,64 @@
+---
+# Source: cert-manager-webhook-civo/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cert-manager-webhook-civo
+  labels:
+    app.kubernetes.io/component: webhook-civo
+    helm.sh/chart: cert-manager-webhook-civo-0.2.0
+    app.kubernetes.io/name: cert-manager-webhook-civo
+    app.kubernetes.io/instance: cert-manager-webhook-civo
+    app.kubernetes.io/version: "0.2.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cert-manager-webhook-civo
+      app.kubernetes.io/instance: cert-manager-webhook-civo
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: cert-manager-webhook-civo
+        app.kubernetes.io/instance: cert-manager-webhook-civo
+    spec:
+      serviceAccountName: cert-manager-webhook-civo
+      securityContext:
+        {}
+      containers:
+        - name: cert-manager-webhook-civo
+          securityContext:
+            {}
+          image: "okteto/civo-webhook:0.2.0"
+          imagePullPolicy: IfNotPresent
+          args:
+            - --tls-cert-file=/tls/tls.crt
+            - --tls-private-key-file=/tls/tls.key
+          env:
+            - name: GROUP_NAME
+              value: "civo.webhook.okteto.com"
+          ports:
+            - name: https
+              containerPort: 443
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              scheme: HTTPS
+              path: /healthz
+              port: https
+          readinessProbe:
+            httpGet:
+              scheme: HTTPS
+              path: /healthz
+              port: https
+          volumeMounts:
+            - name: certs
+              mountPath: /tls
+              readOnly: true
+          resources:
+            {}
+      volumes:
+        - name: certs
+          secret:
+            secretName: cert-manager-webhook-civo-webhook-tls

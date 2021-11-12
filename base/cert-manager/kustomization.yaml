@@ -2,17 +2,20 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - templates/cainjector-deployment.yaml
-  - templates/cainjector-rbac.yaml
-  - templates/cainjector-serviceaccount.yaml
   - templates/crds.yaml
   - templates/deployment.yaml
-  - templates/rbac.yaml
-  - templates/service.yaml
-  - templates/serviceaccount.yaml
   - templates/webhook-deployment.yaml
+  - templates/webhook-serviceaccount.yaml
+  - templates/cainjector-deployment.yaml
+  - templates/webhook-service.yaml
+  - templates/startupapicheck-serviceaccount.yaml
+  - templates/startupapicheck-job.yaml
+  - templates/service.yaml
+  - templates/rbac.yaml
   - templates/webhook-mutating-webhook.yaml
   - templates/webhook-rbac.yaml
-  - templates/webhook-service.yaml
-  - templates/webhook-serviceaccount.yaml
+  - templates/serviceaccount.yaml
+  - templates/cainjector-rbac.yaml
+  - templates/startupapicheck-rbac.yaml
   - templates/webhook-validating-webhook.yaml
+  - templates/cainjector-serviceaccount.yaml

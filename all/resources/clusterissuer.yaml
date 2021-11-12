@@ -18,8 +18,8 @@ spec:
           ingress:
             class: nginx-external
       - dns01:
-          route53:
-            region: FIXME
-            selector:
-              dnsNames:
-                - FIXME
+          webhook:
+            solverName: "civo"
+            groupName: civo.webhook.okteto.com
+            config:
+              secretName: civo-token

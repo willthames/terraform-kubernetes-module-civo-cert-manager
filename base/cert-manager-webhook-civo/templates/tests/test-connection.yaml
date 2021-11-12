@@ -1,0 +1,22 @@
+---
+# Source: cert-manager-webhook-civo/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "cert-manager-webhook-civo-test-connection"
+  labels:
+
+    helm.sh/chart: cert-manager-webhook-civo-0.2.0
+    app.kubernetes.io/name: cert-manager-webhook-civo
+    app.kubernetes.io/instance: cert-manager-webhook-civo
+    app.kubernetes.io/version: "0.2.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args:  ['cert-manager-webhook-civo:443']
+  restartPolicy: Never

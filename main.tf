@@ -12,6 +12,17 @@ data "kustomization_overlay" "resources" {
       value: ${var.email_address}
     EOF
   }
+
+  secret_generator {
+    name = "civo-token"
+    namespace = "cert-manager"
+    literals = [
+      "api-key=${var.civo_token}"
+    ]
+    options {
+      disable_name_suffix_hash = true
+    }
+  }
 }
 
 # first loop through resources in ids_prio[0]

@@ -1,0 +1,22 @@
+---
+# Source: cert-manager-webhook-civo/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: cert-manager-webhook-civo
+  labels:
+    helm.sh/chart: cert-manager-webhook-civo-0.2.0
+    app.kubernetes.io/name: cert-manager-webhook-civo
+    app.kubernetes.io/instance: cert-manager-webhook-civo
+    app.kubernetes.io/version: "0.2.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 443
+      targetPort: https
+      protocol: TCP
+      name: https
+  selector:
+    app.kubernetes.io/name: cert-manager-webhook-civo
+    app.kubernetes.io/instance: cert-manager-webhook-civo

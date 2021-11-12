@@ -1,0 +1,78 @@
+---
+# Source: cert-manager-webhook-civo/templates/pki.yaml
+# Generate a CA Certificate used to sign certificates for the webhook
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: cert-manager-webhook-civo-ca
+  namespace: "cert-manager"
+  labels:
+    helm.sh/chart: cert-manager-webhook-civo-0.2.0
+    app.kubernetes.io/name: cert-manager-webhook-civo
+    app.kubernetes.io/instance: cert-manager-webhook-civo
+    app.kubernetes.io/version: "0.2.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  secretName: cert-manager-webhook-civo-ca
+  duration: 43800h # 5y
+  issuerRef:
+    name: cert-manager-webhook-civo-selfsign
+  commonName: "ca.civo-acme.cert-manager"
+  isCA: true
+---
+# Source: cert-manager-webhook-civo/templates/pki.yaml
+# Generate a serving certificate for the webhook to use
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: cert-manager-webhook-civo-webhook-tls
+  namespace: "cert-manager"
+  labels:
+    helm.sh/chart: cert-manager-webhook-civo-0.2.0
+    app.kubernetes.io/name: cert-manager-webhook-civo
+    app.kubernetes.io/instance: cert-manager-webhook-civo
+    app.kubernetes.io/version: "0.2.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  secretName: cert-manager-webhook-civo-webhook-tls
+  duration: 8760h # 1y
+  issuerRef:
+    name: cert-manager-webhook-civo-ca
+  dnsNames:
+  - cert-manager-webhook-civo
+  - cert-manager-webhook-civo.cert-manager
+  - cert-manager-webhook-civo.cert-manager.svc
+---
+# Source: cert-manager-webhook-civo/templates/pki.yaml
+# Create a selfsigned Issuer, in order to create a root CA certificate for
+# signing webhook serving certificates
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: cert-manager-webhook-civo-selfsign
+  namespace: "cert-manager"
+  labels:
+    helm.sh/chart: cert-manager-webhook-civo-0.2.0
+    app.kubernetes.io/name: cert-manager-webhook-civo
+    app.kubernetes.io/instance: cert-manager-webhook-civo
+    app.kubernetes.io/version: "0.2.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selfSigned: {}
+---
+# Source: cert-manager-webhook-civo/templates/pki.yaml
+# Create an Issuer that uses the above generated CA certificate to issue certs
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: cert-manager-webhook-civo-ca
+  namespace: "cert-manager"
+  labels:
+    helm.sh/chart: cert-manager-webhook-civo-0.2.0
+    app.kubernetes.io/name: cert-manager-webhook-civo
+    app.kubernetes.io/instance: cert-manager-webhook-civo
+    app.kubernetes.io/version: "0.2.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  ca:
+    secretName: cert-manager-webhook-civo-ca
