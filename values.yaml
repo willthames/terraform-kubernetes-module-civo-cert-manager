@@ -1,0 +1,4 @@
+installCRDs: true
+webhook:
+  hostNetwork: true
+  securePort: 16443
