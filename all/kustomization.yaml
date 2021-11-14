@@ -1,3 +1,4 @@
 resources:
   - ../base
-  - resources/clusterissuer.yaml
+  - resources/clusterissuer-staging.yaml
+  - resources/clusterissuer-prod.yaml
