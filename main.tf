@@ -2,6 +2,11 @@ data "kustomization_overlay" "resources" {
   resources = [
     "${path.module}/all"
   ]
+  images {
+    name     = "okteto/civo-webhook"
+    new_name = "docker.io/willthames/cert-manager-webhook-civo"
+    new_tag  = "0.2.0-4-g37125c6"
+  }
   patches {
     target = {
       kind = "ClusterIssuer"
