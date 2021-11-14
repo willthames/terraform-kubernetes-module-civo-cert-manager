@@ -14,9 +14,6 @@ spec:
       name: letsencrypt-private-key
     # Add a single challenge solver, HTTP01 using nginx
     solvers:
-      - http01:
-          ingress:
-            class: nginx-external
       - dns01:
           webhook:
             solverName: "civo"
