@@ -4,6 +4,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: "cert-manager-webhook-civo-test-connection"
+  namespace: cert-manager
   labels:
 
     helm.sh/chart: cert-manager-webhook-civo-0.2.0
