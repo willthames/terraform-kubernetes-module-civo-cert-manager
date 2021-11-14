@@ -4,6 +4,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cert-manager-webhook-civo
+  namespace: cert-manager
   labels:
     app.kubernetes.io/component: webhook-civo
     helm.sh/chart: cert-manager-webhook-civo-0.2.0
